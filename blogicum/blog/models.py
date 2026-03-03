@@ -51,7 +51,7 @@ class Location(models.Model):
         auto_now_add=True, verbose_name='Создано')
 
     def __str__(self):
-        return self.title
+        return self.name
 
     class Meta:
         verbose_name = 'Местоположение'
