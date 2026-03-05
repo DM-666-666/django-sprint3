@@ -4,71 +4,71 @@ from django.contrib.auth.models import User
 
 class Post(models.Model):
     title = models.CharField(
-        max_length=256, 
+        max_length=256,
         verbose_name='Заголовок'
-        )
+    )
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
-        auto_now_add=True, 
-        help_text="Если установить дату и время в будущем — можно делать отложенные публикации.", 
+        auto_now_add=True,
+        help_text="Если установить дату и время в будущем — можно делать отложенные публикации.",
         verbose_name='Дата и время публикации'
-        )
+    )
     author = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
-        verbose_name='Автор Публикации'
-        )
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор публикации'
+    )
     location = models.ForeignKey(
-        'Location', 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
-        verbose_name='Местоположение'
-        )
+        'Location',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='местоположение'
+    )
     category = models.ForeignKey(
-        'Category', 
-        on_delete=models.SET_NULL, 
-        null=True, 
-        blank=True, 
-        verbose_name='Категория'
-        )
+        'Category',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='категория'
+    )
     is_published = models.BooleanField(
-        default=True, 
-        help_text="Снимите галочку, чтобы скрыть публикацию.", 
+        default=True,
+        help_text="Снимите галочку, чтобы скрыть публикацию.",
         verbose_name='Опубликовано'
-        )
+    )
     created_at = models.DateTimeField(
-        auto_now_add=True, 
+        auto_now_add=True,
         verbose_name='Добавлено'
-        )
+    )
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = 'Публикация'
+        verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
 
 
 class Category(models.Model):
     title = models.CharField(
-        max_length=256, 
+        max_length=256,
         verbose_name='Заголовок'
-        )
+    )
     description = models.TextField(verbose_name='Описание')
     slug = models.SlugField(
-        unique=True, 
-        help_text="Идентификатор страницы для URL; разрешены символы латиницы, цифры, дефис и подчёркивание.", 
+        unique=True,
+        help_text="Идентификатор страницы для URL; разрешены символы латиницы, цифры, дефис и подчёркивание.",
         verbose_name='Идентификатор')
     is_published = models.BooleanField(
-        default=True, 
-        help_text="Снимите галочку, чтобы скрыть публикацию.", 
+        default=True,
+        help_text="Снимите галочку, чтобы скрыть публикацию.",
         verbose_name='Опубликовано'
-        )
+    )
     created_at = models.DateTimeField(
-        auto_now_add=True, 
+        auto_now_add=True,
         verbose_name='Добавлено'
-        )
+    )
 
     def __str__(self):
         return self.title
@@ -80,18 +80,18 @@ class Category(models.Model):
 
 class Location(models.Model):
     name = models.CharField(
-        max_length=256, 
+        max_length=256,
         verbose_name='Название места'
-        )
+    )
     is_published = models.BooleanField(
-        default=True, 
-        help_text="Снимите галочку, чтобы скрыть публикацию.", 
+        default=True,
+        help_text="Снимите галочку, чтобы скрыть публикацию.",
         verbose_name='Опубликовано'
-        )
+    )
     created_at = models.DateTimeField(
-        auto_now_add=True, 
+        auto_now_add=True,
         verbose_name='Добавлено'
-        )
+    )
 
     def __str__(self):
         return self.name
