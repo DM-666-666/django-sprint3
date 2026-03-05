@@ -23,14 +23,14 @@ class Post(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name='местоположение'
+        verbose_name='Местоположение'
     )
     category = models.ForeignKey(
         'Category',
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name='категория'
+        verbose_name='Категория'
     )
     is_published = models.BooleanField(
         default=True,
@@ -98,4 +98,4 @@ class Location(models.Model):
 
     class Meta:
         verbose_name = 'местоположение'
-        verbose_name_plural = 'Метоположения'
+        verbose_name_plural = 'Местоположения'
