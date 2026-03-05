@@ -1,23 +1,39 @@
-from django.shortcuts import render
-from django.http import Http404
+from django.shortcuts import render, get_object_or_404
+from django.utils import timezone
 
+from .models import Post, Category
 
 def index(request):
-    """Отображает главную страницу"""
-    template_name = "blog/index.html"
-    return render(request, template_name, {"posts": reversed(posts)})
+
+    post_list = Post.objects.filter(
+        pub_date__lte=timezone.now(),
+        is_published=True,
+        category__is_published=True
+    ).order_by('-created_at')[:5]
+
+    return render(request, 'blog/index.html', {'post_list': post_list})
 
 
 def post_detail(request, id):
-    """Отображает конкретные посты"""
-    template_name = "blog/detail.html"
-    if id not in posts_collection:
-        raise Http404("Страница не найдена!")
-    post = posts_collection[id]
-    return render(request, template_name, {"post": post})
+    
+    post = get_object_or_404(Post, pk=id)
+    if post.pub_date > timezone.now() or not post.is_published or not post.category.is_published:
+        raise Http404("Публикация не найдена или недоступна")
+    
+    return render(request, 'blog/detail.html', {'post': post})
 
 
 def category_posts(request, category_slug):
-    """Отображает список постов по категории"""
-    template_name = "blog/category.html"
-    return render(request, template_name, {"category_slug": category_slug})
+
+    category = get_object_or_404(Category, slug=category_slug)
+
+    if not category.is_published:
+        raise Http404("Категория не опубликована")
+    
+    post_list = Post.objects.filter(
+        category=category,
+        is_published=True,
+        pub_date__lte=timezone.now()
+    )
+
+    return render(request, 'blog/category.html', {'category': category, 'post_list': post_list})
