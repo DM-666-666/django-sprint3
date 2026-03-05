@@ -18,7 +18,11 @@ def index(request):
 def post_detail(request, id):
 
     post = get_object_or_404(Post, pk=id)
-    if post.pub_date > timezone.now() or not post.is_published or not post.category.is_published:
+    if (
+        post.pub_date > timezone.now()
+        or not post.is_published
+        or not post.category.is_published
+    ):
         raise Http404("Публикация не найдена или недоступна")
 
     return render(request, 'blog/detail.html', {'post': post})
@@ -37,4 +41,5 @@ def category_posts(request, category_slug):
         pub_date__lte=timezone.now()
     )
 
-    return render(request, 'blog/category.html', {'category': category, 'post_list': post_list})
+    return render(request, 'blog/category.html', {'category': category,
+                                                  'post_list': post_list})
