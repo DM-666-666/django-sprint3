@@ -74,7 +74,7 @@ class Category(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'Категория'
+        verbose_name = 'категория'
         verbose_name_plural = 'Категории'
 
 
@@ -97,5 +97,5 @@ class Location(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = 'Местоположение'
+        verbose_name = 'местоположение'
         verbose_name_plural = 'Метоположения'
