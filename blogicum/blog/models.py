@@ -9,7 +9,7 @@ class Post(models.Model):
     )
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
-        auto_now_add=True,
+        auto_now_add=False,
         help_text="Если установить дату и время в будущем — можно делать отложенные публикации.",
         verbose_name='Дата и время публикации'
     )
@@ -29,7 +29,7 @@ class Post(models.Model):
         'Category',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
+        blank=False,
         verbose_name='Категория'
     )
     is_published = models.BooleanField(
