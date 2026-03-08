@@ -8,7 +8,11 @@ NUMBER_OF_POSTS = 5
 
 def index_filtration():
     return (
-        Post.objects.select_related("author", "location", "category")
+        Post.objects.select_related(
+            "author", 
+            "location", 
+            "category"
+            )
         .filter(
             pub_date__lte=timezone.now(), 
             is_published=True, 
@@ -25,25 +29,20 @@ def index(request):
 
 def post_detail(request, id):
     """Отображает конкретные посты"""
-    post = get_object_or_404(Post, pk=id)
-    if (
-        post.pub_date > timezone.now()
-        or not post.is_published
-        or not post.category.is_published
-    ):
-        raise Http404("Публикация не найдена или недоступна")
+    post = get_object_or_404(index_filtration(), pk=id)
 
     return render(request, "blog/detail.html", {"post": post})
 
 
 def category_posts(request, category_slug):
     """Отображает список постов по категории"""
-    category = get_object_or_404(Category, slug=category_slug)
+    category = get_object_or_404(
+        Category,
+        slug=category_slug,
+        is_published=True
+        )
 
-    if not category.is_published:
-        raise Http404("Категория не опубликована")
-
-    post_list = index_filtration()
+    post_list = index_filtration().filter(category=category)
 
     return render(
         request, "blog/category.html", {"category": category,
