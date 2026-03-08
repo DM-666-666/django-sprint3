@@ -4,6 +4,7 @@ from django.utils import timezone
 
 from .models import Post, Category
 
+NUMBER_OF_POSTS = 5
 
 def index(request):
     """Отображает главную страницу"""
@@ -11,7 +12,7 @@ def index(request):
         pub_date__lte=timezone.now(), 
         is_published=True, 
         category__is_published=True
-    )[:5]
+    )[:NUMBER_OF_POSTS]
 
     return render(request, "blog/index.html", {"post_list": post_list})
 
