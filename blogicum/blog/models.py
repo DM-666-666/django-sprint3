@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+MAX_LENGTH = 256
+
 
 class PublishedStatus(models.Model):
     is_published = models.BooleanField(
@@ -15,7 +17,7 @@ class PublishedStatus(models.Model):
 
 class Post(PublishedStatus):
     title = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH,
         verbose_name='Заголовок'
     )
     text = models.TextField(verbose_name='Текст')
@@ -61,7 +63,7 @@ class Post(PublishedStatus):
 
 class Category(PublishedStatus):
     title = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH,
         verbose_name='Заголовок'
     )
     description = models.TextField(verbose_name='Описание')
@@ -87,7 +89,7 @@ class Category(PublishedStatus):
 
 class Location(PublishedStatus):
     name = models.CharField(
-        max_length=256,
+        max_length=MAX_LENGTH,
         verbose_name='Название места'
     )
     created_at = models.DateTimeField(
