@@ -2,7 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class Post(models.Model):
+class PublishedStatus(models.Model):
+    is_published = models.BooleanField(
+        default=True,
+        help_text="Снимите галочку, чтобы скрыть публикацию.",
+        verbose_name='Опубликовано'
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Post(PublishedStatus):
     title = models.CharField(
         max_length=256,
         verbose_name='Заголовок'
@@ -35,11 +46,6 @@ class Post(models.Model):
         blank=False,
         verbose_name='Категория'
     )
-    is_published = models.BooleanField(
-        default=True,
-        help_text="Снимите галочку, чтобы скрыть публикацию.",
-        verbose_name='Опубликовано'
-    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Добавлено'
@@ -53,7 +59,7 @@ class Post(models.Model):
         return self.title
 
 
-class Category(models.Model):
+class Category(PublishedStatus):
     title = models.CharField(
         max_length=256,
         verbose_name='Заголовок'
@@ -66,11 +72,6 @@ class Category(models.Model):
             "латиницы, цифры, дефис и подчёркивание."
         ),
         verbose_name='Идентификатор')
-    is_published = models.BooleanField(
-        default=True,
-        help_text="Снимите галочку, чтобы скрыть публикацию.",
-        verbose_name='Опубликовано'
-    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Добавлено'
@@ -84,15 +85,10 @@ class Category(models.Model):
         return self.title
 
 
-class Location(models.Model):
+class Location(PublishedStatus):
     name = models.CharField(
         max_length=256,
         verbose_name='Название места'
-    )
-    is_published = models.BooleanField(
-        default=True,
-        help_text="Снимите галочку, чтобы скрыть публикацию.",
-        verbose_name='Опубликовано'
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
