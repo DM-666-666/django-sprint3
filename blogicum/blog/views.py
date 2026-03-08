@@ -6,19 +6,21 @@ from .models import Post, Category
 
 NUMBER_OF_POSTS = 5
 
+
 def index_filtration():
     return (
         Post.objects.select_related(
-            "author", 
-            "location", 
+            "author",
+            "location",
             "category"
-            )
+        )
         .filter(
-            pub_date__lte=timezone.now(), 
-            is_published=True, 
+            pub_date__lte=timezone.now(),
+            is_published=True,
             category__is_published=True
         )
     )
+
 
 def index(request):
     """Отображает главную страницу"""
@@ -40,7 +42,7 @@ def category_posts(request, category_slug):
         Category,
         slug=category_slug,
         is_published=True
-        )
+    )
 
     post_list = index_filtration().filter(category=category)
 
