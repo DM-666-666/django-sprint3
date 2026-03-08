@@ -8,12 +8,10 @@ from .models import Post, Category
 def index(request):
 
     post_list = Post.objects.filter(
-        pub_date__lte=timezone.now(),
-        is_published=True,
-        category__is_published=True
-    ).order_by('-created_at')[:5]
+        pub_date__lte=timezone.now(), is_published=True, category__is_published=True
+    ).order_by("-created_at")[:5]
 
-    return render(request, 'blog/index.html', {'post_list': post_list})
+    return render(request, "blog/index.html", {"post_list": post_list})
 
 
 def post_detail(request, id):
@@ -26,7 +24,7 @@ def post_detail(request, id):
     ):
         raise Http404("Публикация не найдена или недоступна")
 
-    return render(request, 'blog/detail.html', {'post': post})
+    return render(request, "blog/detail.html", {"post": post})
 
 
 def category_posts(request, category_slug):
@@ -37,10 +35,9 @@ def category_posts(request, category_slug):
         raise Http404("Категория не опубликована")
 
     post_list = Post.objects.filter(
-        category=category,
-        is_published=True,
-        pub_date__lte=timezone.now()
+        category=category, is_published=True, pub_date__lte=timezone.now()
     )
 
-    return render(request, 'blog/category.html', {'category': category,
-                                                  'post_list': post_list})
+    return render(
+        request, "blog/category.html", {"category": category, "post_list": post_list}
+    )
