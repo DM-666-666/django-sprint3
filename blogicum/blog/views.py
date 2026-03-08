@@ -6,13 +6,19 @@ from .models import Post, Category
 
 NUMBER_OF_POSTS = 5
 
+def index_filtration():
+    return (
+        Post.objects.select_related("author", "location", "category")
+        .filter(
+            pub_date__lte=timezone.now(), 
+            is_published=True, 
+            category__is_published=True
+        )
+    )
+
 def index(request):
     """Отображает главную страницу"""
-    post_list = Post.objects.filter(
-        pub_date__lte=timezone.now(), 
-        is_published=True, 
-        category__is_published=True
-    )[:NUMBER_OF_POSTS]
+    post_list = index_filtration()[:NUMBER_OF_POSTS]
 
     return render(request, "blog/index.html", {"post_list": post_list})
 
@@ -37,11 +43,7 @@ def category_posts(request, category_slug):
     if not category.is_published:
         raise Http404("Категория не опубликована")
 
-    post_list = Post.objects.filter(
-        category=category, 
-        is_published=True, 
-        pub_date__lte=timezone.now()
-    )
+    post_list = index_filtration()
 
     return render(
         request, "blog/category.html", {"category": category,
