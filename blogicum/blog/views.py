@@ -6,7 +6,7 @@ from .models import Post, Category
 
 
 def index(request):
-
+    """Отображает главную страницу"""
     post_list = Post.objects.filter(
         pub_date__lte=timezone.now(), is_published=True, category__is_published=True
     ).order_by("-created_at")[:5]
@@ -15,7 +15,7 @@ def index(request):
 
 
 def post_detail(request, id):
-
+    """Отображает конкретные посты"""
     post = get_object_or_404(Post, pk=id)
     if (
         post.pub_date > timezone.now()
@@ -28,7 +28,7 @@ def post_detail(request, id):
 
 
 def category_posts(request, category_slug):
-
+    """Отображает список постов по категории"""
     category = get_object_or_404(Category, slug=category_slug)
 
     if not category.is_published:
