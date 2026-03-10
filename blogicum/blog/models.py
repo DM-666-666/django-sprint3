@@ -54,7 +54,7 @@ class Post(PublishedStatus):
     )
 
     class Meta:
-        ordering = ("-created_at",)
+        ordering = ("-pub_date",)
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
 
