@@ -7,6 +7,7 @@ NUMBER_OF_POSTS = 5
 
 
 def index_filtration():
+    """Производит фильтрацию постов"""
     return (
         Post.objects.select_related(
             "author",
