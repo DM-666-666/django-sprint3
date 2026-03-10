@@ -15,7 +15,17 @@ class PublishedStatus(models.Model):
         abstract = True
 
 
-class Post(PublishedStatus):
+class CreationTime(models.Model):
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Добавлено'
+    )
+
+    class Meta:
+        abstract = True
+
+
+class Post(PublishedStatus, CreationTime):
     title = models.CharField(
         max_length=MAX_LENGTH,
         verbose_name='Заголовок'
@@ -48,10 +58,6 @@ class Post(PublishedStatus):
         blank=False,
         verbose_name='Категория'
     )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Добавлено'
-    )
 
     class Meta:
         ordering = ("-pub_date",)
@@ -62,7 +68,7 @@ class Post(PublishedStatus):
         return self.title
 
 
-class Category(PublishedStatus):
+class Category(PublishedStatus, CreationTime):
     title = models.CharField(
         max_length=MAX_LENGTH,
         verbose_name='Заголовок'
@@ -75,10 +81,6 @@ class Category(PublishedStatus):
             "латиницы, цифры, дефис и подчёркивание."
         ),
         verbose_name='Идентификатор')
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Добавлено'
-    )
 
     class Meta:
         verbose_name = 'категория'
@@ -88,14 +90,10 @@ class Category(PublishedStatus):
         return self.title
 
 
-class Location(PublishedStatus):
+class Location(PublishedStatus, CreationTime):
     name = models.CharField(
         max_length=MAX_LENGTH,
         verbose_name='Название места'
-    )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='Добавлено'
     )
 
     class Meta:
